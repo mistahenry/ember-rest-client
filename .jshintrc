@@ -1,0 +1,7 @@
+{
+    "esversion": 6,
+    "predef": [
+        "require"
+    ],
+    "node": true
+}

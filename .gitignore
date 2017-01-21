@@ -1,0 +1,16 @@
+/dist
+/tmp
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/.idea
+.ember-cli
+
+#dependencies
+/node_modules
+/bower_components
