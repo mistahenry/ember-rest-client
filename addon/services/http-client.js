@@ -2,49 +2,44 @@ import Ember from 'ember';
 var ajax = require('ic-ajax');
 
 export default Ember.Service.extend({
-	/**
-	 * I wanted our GET method to be `get` which means we have lost
-	 * access to the Ember.Object `get` method. So if you need to get a property with a
-	 * getter, use Ember.get(this, 'propName')
-	 */
-	get: function(url, options){
-		return this.rsvpAjax(this.buildGetOpts(url, options));
+	get: function(options){
+        return this.rsvpAjax(this.buildGetOpts(options));
 	},
-    buildGetOpts: function(url, options){
-       return this.buildOpts(url, "GET", undefined, options);
+    buildGetOpts: function(options){
+        return this.buildOpts(options, "GET");
     },
-	delete: function(url, options){
-		return this.rsvpAjax(this.buildDeleteOpts(url, options));
+	delete: function(options){
+        return this.rsvpAjax(this.buildDeleteOpts(options));
 	},
-    buildDeleteOpts: function(url, options){
-       return this.buildOpts(url, "DELETE", undefined, options);
+    buildDeleteOpts: function(options){
+        return this.buildOpts(options, "DELETE");
     },
-	post: function(url, data, options) {
-		return this.rsvpAjax(this.buildPostOpts(url, data, options));
+	post: function(options) {
+        return this.rsvpAjax(this.buildPostOpts(options));
 	},
-    buildPostOpts: function(url, data, options){
-       return this.buildOpts(url, "POST", data, options);
+    buildPostOpts: function(options){
+        return this.buildOpts(options, "POST");
     },
-	put: function(url, data, options){
-		return this.rsvpAjax(this.buildPutOpts(url, data, options));
+	put: function(options){
+		return this.rsvpAjax(this.buildPutOpts(options));
 	},
-    buildPutOpts: function(url, data, options){
-       return this.buildOpts(url, "PUT", data, options);
+    buildPutOpts: function(options){
+        return this.buildOpts(options, "PUT");
     },
-	//config: injectConfig('http-client'),
 	rsvpAjax: function(options){
+        console.log("rsvpAjax", options);
 		return ajax.request(options.url, options);
 	},
-	/**
-	 * options is the same as what $.ajax takes
-	 */
-	buildOpts: function(url, method, data, options) {
-		// build request
-		//var defaultOpts = Ember.get(this,'config').get('defaultOptions');
-		//var opts = $.extend({}, defaultOpts, options, {type: method, data: JSON.stringify(data)});
-		var opts = $.extend({}, options, {type: method, data: JSON.stringify(data)});
-        opts.url = url;
+	buildOpts: function(options, method) {
+        if(!options){
+            options = {};
+        }
+		var defaultOpts = this.getDefaultOpts();
+		var opts = $.extend({}, defaultOpts, options, {type: method, data: JSON.stringify(options.data)});
 		return opts;
-	}
+	},
+    getDefaultOpts: function(){
+        return {};
+    }
 });
 

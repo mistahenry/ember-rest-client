@@ -1,6 +1,7 @@
 {
   "predef": [
     "document",
+    "sinon",
     "require",
     "window",
     "location",

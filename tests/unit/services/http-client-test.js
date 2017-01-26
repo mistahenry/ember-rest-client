@@ -19,7 +19,7 @@ test('simple get', function(assert){
         jqXHR: {},
         textStatus: 'success'
     });
-    service.get("/foo").then(function(it){
+    service.get({url:"/foo"}).then(function(it){
         assert.ok(it);
         assert.equal(it.name, 'foo');
     });
