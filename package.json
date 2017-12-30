@@ -1,7 +1,7 @@
 {
   "name": "ember-rest-client",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "Create an API wrapper for Ember without Ember Data",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,14 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/henryw14/ember-rest-client.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Will Henry",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
