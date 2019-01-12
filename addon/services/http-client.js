@@ -1,7 +1,8 @@
-import Ember from 'ember';
-var ajax = require('ic-ajax');
+import Service from '@ember/service';
+import ajax from 'ember-fetch/ajax';
+import { assign } from '@ember/polyfills';
 
-export default Ember.Service.extend({
+export default Service.extend({
     get: function (options) {
         return this.rsvpAjax(this.buildGetOpts(options));
     },
@@ -27,7 +28,6 @@ export default Ember.Service.extend({
         return this.buildOpts(options, "PUT");
     },
     rsvpAjax: function (options) {
-        console.log("rsvpAjax", options);
         return ajax.request(options.url, options);
     },
     buildOpts: function (options, method) {
@@ -35,7 +35,7 @@ export default Ember.Service.extend({
             options = {};
         }
         var defaultOpts = this.getDefaultOpts();
-        var opts = $.extend({}, defaultOpts, options, {type: method, data: JSON.stringify(options.data)});
+        var opts = assign({}, defaultOpts, options, {type: method, data: JSON.stringify(options.data)});
         return opts;
     },
     getDefaultOpts: function () {

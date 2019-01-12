@@ -1,9 +1,13 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
+import { Promise } from 'rsvp';
+import Service from '@ember/service';
+import sinon from 'sinon';
+import { get } from '@ember/object'; 
+
 let simpleFoo = function(fooVal, workFn){
     return function(options){
         if(options.url === '/foo'){
-            console.log("resolving");
             return resolveWith({
                 foo: fooVal
             });
@@ -16,16 +20,16 @@ let simpleFoo = function(fooVal, workFn){
     };
 };
 let resolveWith = function(obj){
-    return new Ember.RSVP.Promise(function(resolve){
+    return new Promise(function(resolve){
         resolve(obj);
     });
 };
 let rejectWith = function(error){
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new Promise(function(resolve, reject){
         reject(error);
     });
 };
-let MockHttpClass = Ember.Service.extend({
+let MockHttpClass = Service.extend({
     get: simpleFoo('get', function(options){
         if(options.url === '/error'){
             return rejectWith({error: 'error'});
@@ -86,7 +90,7 @@ test('beforeRequest and afterRequest called in proper order', function(assert){
     sandbox.spy(service, 'beforeRequest');
     sandbox.spy(service, 'afterRequest');
 
-    let httpClient = Ember.get(service, 'httpClient');
+    let httpClient = get(service, 'httpClient');
     sandbox.spy(httpClient, 'get');
     service.get({ url: '/foo'});
     sinon.assert.callOrder(service.beforeRequest, httpClient.get, service.afterRequest);
@@ -111,7 +115,6 @@ test('error path', function(assert){
     sandbox.spy(service, 'customError');
     return service.get({url: '/error'}).then(Ember.K, function(error){
         assert.ok(error);
-        console.log("error", error);
         assert.equal(error.error, 'error');
         assert.ok(service.customError.calledOnce);
     });

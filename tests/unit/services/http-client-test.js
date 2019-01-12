@@ -1,5 +1,4 @@
 import { moduleFor, test } from 'ember-qunit';
-var ajax = require('ic-ajax');
 
 moduleFor('service:http-client', 'Unit | Service | http client', {
     // Specify the other units that are required for this test.
@@ -12,18 +11,6 @@ test('it exists', function(assert) {
     assert.ok(service);
 });
 
-test('simple get', function(assert){
-    let service = this.subject();
-    ajax.defineFixture("/foo", {
-        response: {name: 'foo'},
-        jqXHR: {},
-        textStatus: 'success'
-    });
-    service.get({url:"/foo"}).then(function(it){
-        assert.ok(it);
-        assert.equal(it.name, 'foo');
-    });
-});
 test('build GET options', function(assert){
     let service = this.subject();
     var opts = service.buildGetOpts("/test", {});
