@@ -1,5 +1,4 @@
 import { moduleFor, test } from 'ember-qunit';
-var ajax = require('ic-ajax');
 
 moduleFor('service:http-client', 'Unit | Service | http client', {
     // Specify the other units that are required for this test.
@@ -12,35 +11,33 @@ test('it exists', function(assert) {
     assert.ok(service);
 });
 
-test('simple get', function(assert){
-    let service = this.subject();
-    ajax.defineFixture("/foo", {
-        response: {name: 'foo'},
-        jqXHR: {},
-        textStatus: 'success'
-    });
-    service.get({url:"/foo"}).then(function(it){
-        assert.ok(it);
-        assert.equal(it.name, 'foo');
-    });
-});
 test('build GET options', function(assert){
     let service = this.subject();
     var opts = service.buildGetOpts("/test", {});
-    assert.equal(opts.type, "GET");
+    assert.equal(opts.method, "get");
 });
 test('build POST options', function(assert){
     let service = this.subject();
     var opts = service.buildPostOpts("/test", {});
-    assert.equal(opts.type, "POST");
+    assert.equal(opts.method, "post");
 });
 test('build PUT options', function(assert){
     let service = this.subject();
     var opts = service.buildPutOpts("/test", {});
-    assert.equal(opts.type, "PUT");
+    assert.equal(opts.method, "put");
 });
 test('build DELETE options', function(assert){
     let service = this.subject();
     var opts = service.buildDeleteOpts("/test", {});
-    assert.equal(opts.type, "DELETE");
+    assert.equal(opts.method, "delete");
+});
+
+test('data gets mapped to body', function(assert){
+    let service = this.subject();
+    var opts = service.buildOpts({
+        data: {
+            foo: "foo"
+        }
+    });
+    assert.equal(opts.body, JSON.stringify({ foo: "foo"}));
 });
