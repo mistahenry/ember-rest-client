@@ -85,17 +85,23 @@ export default Service.extend({
     },
     _error: function (restClientClass, promise, options) {
         return function (error) {
-            error = restClientClass.customError(error, options);
-            restClientClass._rethrowError(error, options);
-        };
+            return restClientClass.customError(error, options).then(function(customError){
+                if(customError){
+                    restClientClass._rethrowError(customError, options);
+                }
+            });
+        }
     },
     /**
      * App specific custom error handling. Should return error or _rethrowError
      */
     customError: function (error, /*options*/) {
-        return error;
+        return Promise.resolve(error);
     },
     _rethrowError(error, options){
+        if(!error){
+            error = {};
+        }
         assign(error, {
             url: options.url,
             method: options.method.toUpperCase()
