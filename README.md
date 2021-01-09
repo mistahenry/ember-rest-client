@@ -70,9 +70,9 @@ export default class RestClientService extends RestClient {
 	someNotificationService;
 	
 	customError: function (error, /*options*/) {
-     	this.someNotificationService.showToast(error.errorMessage);
-        return Promise.resolve(error);
-    }
+		this.someNotificationService.showToast(error.errorMessage);
+		return Promise.resolve(error);
+	}
 }
 ```
 
