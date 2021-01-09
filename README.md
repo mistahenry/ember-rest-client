@@ -60,6 +60,29 @@ export default class RetailerServiceService extends Service {
 
 The above service uses `this.restClient.get` to send a `HTTP GET` to the specified URL to pull up the details about a single return. The `createRefund` function uses `this.restClient.post` to send an `HTTP POST` to the specified URL with the `data` as the post body. In both cases, my model object is a simple `ES6` class that extends nothing.
 
+If you wish to customize the behavior of the rest-client, create you own `rest-client` service in your project that extends the provided `rest-client` and override many of its built in methods.
+
+```
+import RestClient from 'ember-rest-client/services/rest-client';
+import { inject } from '@ember/service';
+export default class RestClientService extends RestClient {
+	@inject
+	someNotificationService;
+	
+	customError: function (error, /*options*/) {
+     	this.someNotificationService.showToast(error.errorMessage);
+        return Promise.resolve(error);
+    }
+}
+```
+
+You can customize this class to add features like:
+
+1. auto serialization/deserialization of model objects
+2. Global API error handling
+3. Passing of an authentication token as a header on all authenticated requests
+4. Global Redirection of authentication errors to a login route
+
 License
 ------------------------------------------------------------------------------
 
